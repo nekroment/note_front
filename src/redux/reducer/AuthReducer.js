@@ -1,66 +1,101 @@
 import { authAPI } from "../../api/api";
+import { stopSubmit } from "redux-form";
+import { setUserNote } from "./UserReducer";
 
 
-const SET_USER_DATA = 'SET_USER_DATA';
+const SET_AUTH = 'SET_AUTH';
+const SET_USER = 'SET_USER';
 
+//Начальное значение состояния пользователя
 let initialState = {
     usersId: null,
-    email: null,
-    login: null,
-    isAuth: false
+    isAuth: false,
+    token: null
 };
 
 const authReducer = (state = initialState, action) => {
-    switch(action.type) {
-        case SET_USER_DATA: {
-            return {...state, ...action.data};
+    switch (action.type) {
+        //Обозначение авторизации пользователя
+        case SET_AUTH: {
+            return { ...state, isAuth: action.isAuth };
+        }
+        //Завершение инициализации
+        case SET_USER: {
+            return { ...state, token: action.token };
         }
         default: return state;
     }
 };
 
-export const setAuthUserData = (userId, email, login, isAuth) => ({
-    type: SET_USER_DATA,
-    data: {userId, email, login, isAuth}
+//dispatch авторизации
+export const setAuth = (isAuth) => ({
+    type: SET_AUTH,
+    isAuth
 })
 
-export const authMeThunkCreator = () => {
-    return async(dispatch) => {
-        let response = await authAPI.authMe();
+//dispatch id пользователя
+export const setUser = (token) => ({
+    type: SET_USER,
+    token
+})
 
-        if(response.data.resultCode === 0) {
-            let {id, login, email} = response.data.data;
-            dispatch(setAuthUserData(id, email, login, true));
+//Запрос на получения данных пользователя
+export const authMeThunkCreator = (token) => {
+    return async (dispatch) => {
+        try {
+            let response = await authAPI.authMe(token);
+            if (response.data.correct === true) {
+                dispatch(setAuth(true));
+                dispatch(setUserNote(response.data.userNotes));
+            }
+        } catch (error) {
         }
     };
 };
 
-export const LoginMeThunkCreator = (email, password, rememberMe) => {
-    return async(dispatch) => {
-        let response = await authAPI.Login(email, password, rememberMe);
-
-        if(response.data.resultCode === 0) {
-            dispatch(authMeThunkCreator());
+//Запрос на авторизацию пользователя
+export const loginMeThunkCreator = (email, password) => {
+    return async (dispatch) => {
+        try {
+            let response = await authAPI.Login(email, password);
+            if (response.data.correct === true) {
+                dispatch(setUser(response.headers.auth_token));
+                dispatch(authMeThunkCreator(response.headers.auth_token));
+            }
+        } catch (error) {
+            let action = stopSubmit("login", { _error: error.response.data.message });
+            dispatch(action);
         }
     }
 }
 
-export const LogOutThunkCreator = () => {
-    return async(dispatch) => {
-        let response = await authAPI.LogOut();
 
-        if (response.data.resultCode === 0) {
-            dispatch(setAuthUserData(null, null, null, false));
+//Запрос на выход пользователя
+export const logOutThunkCreator = (token) => {
+    return async (dispatch) => {
+        try {
+            let response = await authAPI.LogOut(token);
+            if (response.data.correct === true) {
+                dispatch(setAuth(false));
+                dispatch(setUserNote([]));
+                dispatch(setUser(null));
+            }
+        } catch (error) {
+
         }
     };
 };
 
-export const RegistrationThunkCreator = (email, password, login) => {
-    return async(dispatch) => {
-        let response = await authAPI.Registration(email, password, login);
-
-        if(response.data.resultCode === 0) {
-            dispatch(LoginMeThunkCreator(email, password, true));
+//Запрос на регистрацию пользователя
+export const registrationThunkCreator = (email, password, login) => {
+    return async (dispatch) => {
+        try {
+            let response = await authAPI.Registration(email, password, login);
+            if (response.data.correct === true) {
+                dispatch(loginMeThunkCreator(email, password));
+            }
+        } catch (error) {
+            console.log(error.response.data.message);
         }
     };
 };

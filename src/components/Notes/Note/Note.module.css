@@ -1,0 +1,68 @@
+.note {
+    border: black solid 2px;
+    position: relative;
+	cursor: default;
+    margin-bottom: 8px;
+    padding-bottom: 12px;
+    padding-top: 8px;
+    padding-left: 8px;
+    
+
+    background: #cfc4c4;
+    border-radius: 3px;
+}
+.cross {
+    background-image: url('../../../icon/cross.png');
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    float: right;
+}
+.title {
+    display: block;
+    
+    text-align: left;
+    word-wrap: break-word;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 19px;
+    font-family: 'Lato-Bold';
+}
+.body {
+    display: block;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 19px;
+    color: #000000;
+    word-wrap: break-word;
+    text-align: left;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-family: 'Lato-Regular';
+    transition: background-color 0.2s linear;
+}
+.note button {
+    box-sizing: border-box;
+    height: 30px;
+    border-radius: 3px;
+    font-family: 'Lato-Light';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 17px;
+    line-height: 19px;
+    color: #ffffff;
+    padding-top: 7px;
+    padding-right: 8px;
+    padding-left: 8px;
+    padding-bottom: 4px;
+    background-color: rgb(3, 6, 170);
+    border: none;
+    display: inline-block;
+}
+.desabled {
+    display: none;
+}
+.undesabled{
+    display: block;
+}

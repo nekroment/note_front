@@ -1,0 +1,74 @@
+.form input {
+    padding-top: 8px;
+    padding-right: 12px;
+    padding-left: 6px;
+    padding-bottom: 8px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    background: #FFFFFF;
+    border: none;
+    resize: none;
+    width: 97%;
+    box-shadow: 0px 1px 4px rgba(9, 45, 66, 0.25);
+    border-radius: 3px;
+    font-family: 'Lato-Light';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 17px;
+    line-height: 19px;
+    color: #74767a;
+}
+.form textarea{
+    width: 97%;
+    padding-top: 8px;
+    padding-right: 12px;
+    padding-left: 6px;
+    padding-bottom: 8px;
+    margin-top: 2px;
+    margin-bottom: 8px;
+    background: #FFFFFF;
+    border: none;
+    resize: none;
+    box-shadow: 0px 1px 4px rgba(9, 45, 66, 0.25);
+    border-radius: 3px;
+    font-family: 'Lato-Light';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 17px;
+    line-height: 19px;
+    color: #74767a;
+}
+.createNote button {
+    box-sizing: border-box;
+    width: 120px;
+    height: 30px;
+    border-radius: 3px;
+    font-family: 'Lato-Light';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 17px;
+    line-height: 19px;
+    color: #FFFFFF;
+    padding-top: 7px;
+    padding-right: 8px;
+    padding-left: 8px;
+    padding-bottom: 4px;
+    
+    border: none;
+    display: inline-block;
+}
+.save {
+    background: green;
+    margin-left: 82%;
+}
+
+.changeForm {
+    background: rebeccapurple;
+}
+
+.desabled {
+    display: none;
+}
+.undesabled{
+    display: block;
+}

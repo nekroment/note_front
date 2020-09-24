@@ -1,28 +1,63 @@
 import * as axios from 'axios';
 
+//Базовые значения запроса
 const instance = axios.create({
-    withCredentials: true,
-    baseURL: '',
+    baseURL: 'http://localhost:3000'
 })
 
 export const authAPI = {
-    authMe() {
-        return instance.get('');
+    //Запрос на получение данных пользователя
+    async authMe(token) {
+        return instance.get('/note', {
+            headers: {'auth_token': token}
+        });
     },
-    Login(email, password, rememberMe = false) {
-        return instance.post('', {email, password, rememberMe});
+    //Запрос на авторизацию пользователя
+    async Login(email, password) {
+        return instance.post('/auth/login/', { email, password });
     },
-    LogOut() {
-        return instance.delete('');
+    //Запрос на выход пользователя
+    async LogOut(token) {
+        return instance.delete('/auth/logout', {
+            headers: {'auth_token': token}
+        });
     },
-    Registration(email, password, login) {
-        return instance.post('', {email, password, login});
+    //Запрос на регистрацию пользователя
+    async Registration(email, password, name) {
+        return instance.post('/auth/register/', { name, email, password });
     }
 
 }
 
-export const profileAPI = {
-    getProfile(userId) {
-        return instance.get('');
+export const userAPI = {
+    //Запрос на получение заметок пользователя
+    async getUserNote(token) {
+        return instance.get('/note', {
+            headers: {'auth_token': token}
+        });
+    },
+    //Запрос на добовление новой заметки
+    async pushUserNote(title, description, token) {
+        return instance.post("/note", { title, description }, {
+            headers: {'auth_token': token}
+        });
+    },
+    //Запрос уникальной заметки
+    async getSpecificNote(postId, token) {
+        return instance.get(`/note/${postId}`, {
+            headers: {'auth_token': token}
+        });
+    },
+    //Запрос на изменение заметки
+    async changeNote(_id, title, description, token) {
+        return instance.patch('/note', { _id, title, description }, {
+            headers: {'auth_token': token}
+        });
+    },
+    //Запрос на удаление заметки
+    async deleteNote(postId, token) {
+        return instance.delete(`/note/${postId}`, {
+            headers: {'auth_token': token}
+        });
     }
 }
